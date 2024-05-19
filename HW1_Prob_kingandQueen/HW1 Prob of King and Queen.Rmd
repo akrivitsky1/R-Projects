@@ -1,0 +1,31 @@
+---
+title: "HW1_Q3"
+output: 
+ #probability of exactly two kings:  0.0398648 
+#probability of exactly four diamonds:  0.0107293 
+date: "2024-01-22"
+---
+
+```{r}
+
+dealcard<-function(nreps){
+  countKings <-0
+  countDiamonds<-0
+  for (i in 1:nreps){
+    hand <- sample(1:52,5)
+    king <- intersect(1:4,hand) 
+    diamond <- intersect(4:16,hand) 
+
+  if (length(king) ==2){
+    countKings<-countKings+1
+  }
+   if (length(diamond) ==4){
+    countDiamonds<-countDiamonds+1
+   }
+  }
+   cat("probability of exactly two kings: ",countKings/nreps ,"\n")
+   cat("probability of exactly four diamonds: ",countDiamonds/nreps ,"\n")
+
+}
+dealcard(10000000)
+```

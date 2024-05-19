@@ -1,0 +1,23 @@
+---
+title: "HW2_Q4"
+output: html_document
+date: "2024-02-07"
+---
+
+```{r}
+game<-function(nreps){
+  count<-0
+  for(i in 1:nreps){
+    X<-sample(1:8,1,replace = TRUE)
+    Y<-sample(1:8,1,replace = TRUE)
+    count<-count+X+Y
+
+  }
+  cat("E(x)= ", count/nreps, "\n")
+  
+}
+game(1000000)
+
+#OUTPUT:
+#Var(X+Y): 1.56042 
+```

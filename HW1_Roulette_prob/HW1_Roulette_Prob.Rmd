@@ -1,0 +1,32 @@
+---
+title: "homework1_Q1"
+output: 
+#[1] 0.0496183
+#[1] 0.0579982
+date: "2024-01-13"
+---
+
+Question 1:
+```{r}
+roulette <- function(X, nreps) {
+  count <- 0
+  for (i in 1:nreps) {
+    Y <- sample(0:10, 1, replace = TRUE)
+    Z <- sample(0:10, 1, replace = TRUE)
+    sum <- X+Y+Z
+    if (sum == 17) {
+      count <- count + 1
+    }
+  }
+  return(count / nreps)
+}
+
+# Probability when the first spin is 2
+roulette(2, 10000000)
+
+# Probability when the first spin is 3
+roulette(3, 10000000)
+
+```
+
+

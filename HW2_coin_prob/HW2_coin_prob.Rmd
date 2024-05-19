@@ -1,0 +1,33 @@
+---
+title: "HW_Q2"
+output: html_document
+date: "2024-02-08"
+---
+
+```{r}
+game <-function(nreps) {
+  TotalMoney <-0
+  for (i in 1:nreps) {
+    numOfHeads<-0
+    for (j in 1:6){
+      if(runif(1)<0.5){
+        numOfHeads <- numOfHeads+1
+      }
+      if (numOfHeads==4) {
+          TotalMoney <- TotalMoney+j
+          break
+        }
+
+      }
+      if (numOfHeads<=3){
+        TotalMoney<-TotalMoney+7;
+      }
+      
+    }
+  cat("E(X): ", TotalMoney/nreps, "\n")
+}
+
+game(100000)
+#OUTPUT:
+#E(X):  6.40398 
+```

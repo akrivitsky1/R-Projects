@@ -1,0 +1,169 @@
+---
+title: "HW1_Q2"
+output: 
+#P(c=0|X1!=X2):  0.7405989 
+#P(c=1|X1!=X2):  0.2594011 
+#P(c=2|X1!=X2):  0
+date: "2024-01-21"
+---
+
+```{r}
+#ALOHA problem but only one node is actice
+ALOHA<- function(nreps){
+  p<-0.4
+  q<-0.8
+  x1not2 <-0
+  finalc0<-0
+  finalc1<-0
+  finalc2<-0
+  x1<-0
+  x2<-0
+  c1<-0
+  c2<-0
+  for (i in 1:nreps){ #for each rep
+    #stimulate EPOCH 1 
+    numactive<-1 #before
+    if (runif(1)<q) {
+      numactive<-numactive+1
+    }
+    if (numactive==1) { #if N2 remains NA
+      if (runif(1)<p){ #N1 S?
+        x1<-0 #Yes
+        c1<-0
+      }else {
+        x1<-1 #No
+        c1<-0
+        }
+    }
+    else{ #if two active
+      numsend<-0 
+      for (j in 1:2) {
+      if (runif(1)<p){
+        numsend<-numsend+1
+        }
+      }
+      if (numsend==0){
+        x1<-2
+        c1<-0
+      }
+      if (numsend==1){
+        x1<-1
+        c1<-0
+      } 
+      if (numsend==2){
+        x1<-2
+        c1<-1
+      }
+    }
+    #EPOCH 2
+    numactive <-x1 
+    if (numactive==0){ #IF from EPOCH 1 two were NA
+      numactive2<-0 
+      for (j in 1:2) {
+      if (runif(1)<q){
+        numactive2<-numactive2+1
+        }
+      }
+      if (numactive2==0){ #neither activate
+        x2<-0
+        c2<-0
+      } 
+      if (numactive2==1) #1 activates
+        if (runif(1)<p){ #does it send
+          x2<-0 #if yes
+          c1<-0
+        } else{
+          x2<-1 #else
+          c2<-0
+        }
+      if (numactive2==2){ # both activate 
+        numsend<-0
+        for (j in 1:2) {
+          if (runif(1)<p){
+          numsend<-numsend+1
+          }
+        }
+        if (numsend==0) {
+          x2<-2
+          c2<-0
+        }
+        if (numsend==1){
+          x2<-1
+          c2<-0
+        } 
+        if(numsend==2) {
+          x2<-2
+          c2<-1
+      }
+      }
+    }
+    if (numactive==1){ #If from EPOCH 1 only one was active
+      if (runif(1)<q) { #If N2 A
+        numsend<-0
+        for (j in 1:2) {
+          if (runif(1)<p){
+          numsend<-numsend+1
+          }
+        }
+        if (numsend==0) {
+          x2<-2
+          c2<-0
+        }
+        if (numsend==1){
+          x2<-1
+          c2<-0
+        } 
+        if(numsend==2) {
+          x2<-2
+          c2<-1
+        }
+      } else {
+        if (runif(1)<p) {
+          x2<-0
+          c2<-0
+        } else {
+          x2<-1
+          c2<-0
+        }
+      }
+    }
+    if (numactive==2){ #IF from EPOCH 1 both were active
+      numsend<-0
+      for (j in 1:2) {
+      if (runif(1)<p){
+        numsend<-numsend+1
+        }
+      }
+      if (numsend==0){
+        x2<-2
+        c2<-0
+      }
+      if (numsend==1){
+        x2<-1
+        c2<-0
+      } 
+      if (numsend==2) {
+        x2<-2
+        c2<-1
+      }}
+    c<-c1+c2
+    if (x1!=x2) {
+        x1not2 <-x1not2+1
+        if (c==0) {finalc0<-finalc0+1}
+        if (c==1) {finalc1<-finalc1+1}
+        if (c==2) {finalc2<-finalc2+1}
+    }
+  }
+  
+
+
+ cat("P(c=0|X1!=X2): ", finalc0/x1not2 ,"\n")
+ cat("P(c=1|X1!=X2): ", finalc1/x1not2 ,"\n")
+ cat("P(c=2|X1!=X2): ", finalc2/x1not2)
+}
+ ALOHA(10000000)  
+
+ 
+```
+
+

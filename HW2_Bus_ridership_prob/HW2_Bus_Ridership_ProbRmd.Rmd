@@ -1,0 +1,115 @@
+---
+title: "HW2_Q1"
+output: html_document
+date: "2024-02-07"
+---
+
+```{r}
+busRider <- function(nreps){
+  B1eq0<-0
+  B1eq1<-0
+  B1eq2<-0
+  L2eq0<-0
+  L2eq1<-0
+  L2eq2<-0
+  L2eq3<-0
+  L2eq4<-0
+  ExpL1<-0
+  ExpL1Sq<-0
+  ExpL2<-0
+  ExpL2Sq<-0
+  L1L2eq1<-0
+  L1L2eq2<-0
+  L1L2eqneg1<-0
+  L1L2eqneg2<-0
+  EXL1minusL2<-0
+  EXL1minusL2exp<-0
+  x<-0
+
+  for (i in 1:nreps){
+    #Calculating the info for Var(L1)
+     L1<-sample(0:2,1,prob = c(0.5,0.4,0.1), replace = TRUE)
+     if (L1==0) {
+       B1eq0<-B1eq0+1
+     }
+     else if (L1==1) {
+       B1eq1<-B1eq1+1
+     } 
+     else {
+       B1eq2<-B1eq2+1
+     }
+     #For Var(L2)
+     numAligting <-0
+     if (L1==1){
+       if(runif(1)<0.2){
+         numAligting<-numAligting+1
+       }
+     }
+      else if (L1==2){
+       if(runif(1)<0.2){
+         numAligting<-numAligting+1
+       }
+       if(runif(1)<0.2){
+         numAligting<-numAligting+1
+       }
+     }
+     #determining l2
+     numEntering<-sample(0:2,1,prob = c(0.5,0.4,0.1), replace = TRUE)
+     L2<-L1-numAligting+numEntering
+  
+     if (L2==0){
+         L2eq0<-L2eq0+1
+     }
+     else if (L2==1){
+         L2eq1<-L2eq1+1
+     }
+     else if (L2==2){
+         L2eq2<-L2eq2+1
+     }
+     else if (L2==3){
+         L2eq3<-L2eq3+1
+     }
+     else if (L2==4){
+         L2eq4<-L2eq4+1
+     }
+     #calculating L1-L2
+     x<-(L1-L2)
+     
+     if (x==1){
+       L1L2eq1<-L1L2eq1+1
+       
+     }
+     else if (x==2){
+       L1L2eq2<-L1L2eq2+1
+     }
+     else if(x==(-1)){
+       L1L2eqneg1<-L1L2eqneg1+1
+     }
+     else if(x==(-2)){
+       L1L2eqneg2<-L1L2eqneg2+1
+     }
+  }
+
+  ExpL1<-(B1eq1+B1eq2*2)/nreps
+  ExpL1Sq<- (B1eq1+B1eq2*4)/nreps
+  VarL1<-ExpL1Sq-(ExpL1^2)
+  cat("Var(L1)= ",VarL1, "\n")
+  ExpL2<-(L2eq1+L2eq2*2+L2eq3*3+L2eq4*4)/nreps
+  ExpL2Sq<- (L2eq1+L2eq2*4+L2eq3*9+L2eq4*16)/nreps 
+  VarL2<-ExpL2Sq-(ExpL2^2)
+  cat("Var(L2)= ",VarL2, "\n")
+  EXL1minusL2<-(L1L2eq1+L1L2eq2*2+(L1L2eqneg1*(-1))+(L1L2eqneg2*(-2)))/nreps 
+  EXL1minusL2exp<-(L1L2eq1+(L1L2eq2*4)+L1L2eqneg1+(L1L2eqneg2*4))/nreps 
+  VarL1L2<-(EXL1minusL2exp-((EXL1minusL2)^2))
+  cat("Var(L1-L2)= ",VarL1L2, "\n")
+  cat("Hence, we have proved that Var(L1-L2)= ",VarL1L2, " is not equal to Var(L1)+Var(L2) ", VarL1, "+", VarL2, "=", VarL1+VarL2)
+  
+}
+busRider(1000000)
+
+#OUTPUT:
+#Var(L1)=  0.439751 
+#Var(L2)=  0.817702 
+#Var(L1-L2)=  0.5525513 
+#Hence, we have proved that Var(L1-L2)=  0.5525513  is not equal to Var(L1)+Var(L2)  0.439751 + 0.817702 = 1.257453
+```
